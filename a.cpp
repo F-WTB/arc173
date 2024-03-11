@@ -42,8 +42,6 @@ int T;
 ll K;
 
 ll f(ll K);
-ll f(int d, ll K);
-ll f(int d, int x, ll K);
 
 int main()
 {
@@ -63,25 +61,21 @@ ll f(ll K)
         K -= pow(9, d);
         ++d;
     }
-    return f(d, K);
-}
-ll f(int d, ll K)
-{
-    ll t = pow(9, d - 1);
-    return f(d, K / t + 1, K % t);
-}
-ll f(int d, int x, ll K)
-{
-    if (d == 0)
-        return 0;
-    if (d == 1)
-        return x;
-    ll t = pow(9, d - 2);
-    if (K < pow(9, d - 2))
-        return x * pow(10, d - 1) + f(d - 2, K);
-    else
+    vector<int> v;
+    for (int i = 0; i < d; ++i)
     {
-        int y = K / t;
-        return x * pow(10, d - 1) + f(d - 1, y + (y >= x), K % t);
+        v.push_back(K % 9);
+        K /= 9;
     }
+    ll x = 0;
+    int a = 0;
+
+    for (int i = 0; i < d; ++i)
+    {
+        x *= 10;
+        int t = v[d - 1 - i] + (v[d - 1 - i] >= a);
+        x += t;
+        a = t;
+    }
+    return x;
 }
